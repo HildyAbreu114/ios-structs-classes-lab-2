@@ -11,6 +11,10 @@ struct Room {
      let length: Double
      let width: Double
 }
+
+var room1 = Room(maxOccupancy: 25, length: 200, width: 200)
+print(room1)
+If this was a reference type, the above code would print something like "__lldb_expr_(a number).Room", but because it is a value type, it prints out the values of the parameters of room1 instead.
 ```
 
 ## Question 2
@@ -22,6 +26,11 @@ class Bike {
     var wheelNumber = 2
     var hasBell = false
 }
+
+print(bike1)
+If this was a value type, it would print out the values of the parameters of bike2, but because it is a reference type, it prints out the location of the information it is referencing instead. (__lldb_expr_1.Bike)
+
+
 ```
 
 ## Question 3
@@ -35,11 +44,31 @@ class Animal {
         print("I am an animal named \(name)")
     }
 }
+answer on B
 ```
 
 b. Override the printDescription method to have the instance of the Bird object print out its name and whether it can fly
-
-
+```
+class Animal {
+var name: String = ""
+func printDescription() {
+print("I am an animal named \(name)")
+}
+}
+class Bird: Animal {
+var canFly: Bool
+init(canFly:Bool) {
+self.canFly = canFly
+}
+override func printDescription() {
+if canFly == true {
+print("I am a bird named \(name), and I can fly!")
+} else {
+print("I am a bird named \(name), and I can't fly. :(")
+}
+}
+}
+```
 ## Question 4
 
 ```swift
@@ -60,7 +89,38 @@ a. Create a `LoudBike` subclass of Bike.  When you call `ringBell` it should rin
 
 b. Give `LoudBike` a new method called `ringBell(times:)` that rings the bell a given number of times
 
+```
+class Bike {
+let wheelNumber = 2
+let wheelWidth = 1.3
+var hasBell = true
+func ringBell() {
+if hasBell {
+print("Ring!")
+}
+}
+}
+class LoudBike: Bike {
+override func ringBell() {
+if hasBell {
+print("RING!!!")
+}
+}
+func ringBellWhateverTimes(numberOfRings: Int) {
+for _ in 1...numberOfRings {
+print("RING!!!")
+}
+}
+}
+var bike3 = LoudBike()
+bike3.ringBellWhateverTimes(numberOfRings: 5)
+Collapse
 
+
+
+
+Message Input
+```
 ## Question 5
 
 ```swift
@@ -80,7 +140,39 @@ c. Override the `name` property of `Square` so that it returns a String containi
 d. Create a class `Rectangle` that subclasses from `Shape`.  Give it a `width` property with a default value of 6 and a `height` property with a default value of 4
 
 e. Override the `name` property of `Rectangle` so that it returns a String containing its name ("Rectangle") and its area and perimeter.
+```
+class Shape {
+var name: String { return "This is a generic shape" }
+var area: Double { fatalError("Subclasses must override the area") }
+var perimeter: Double { fatalError("Subclasses must override the perimeter") }
+}
+class Square: Shape {
+var sideLength:Double = 5.0
 
+override var area: Double {
+return Double(sideLength * sideLength)
+}
+override var perimeter: Double {
+return Double(sideLength * 4)
+}
+override var name: String {
+return String("Name: \(self) | Perimeter: \(perimeter) | Area: \(area)")
+}
+}
+class Rectangle: Shape {
+var width = 6
+var height = 4
+
+override var area: Double {
+return Double(width * height)
+}
+override var perimeter: Double {
+return Double((width + height) * 2)
+}
+override var name: String {
+return String("Name: \(self) | Perimeter: \(perimeter) | Area: \(area)")
+}
+```
 f. (BONUS) What happens when you run the code below?  Explain why.
 
 ```swift
